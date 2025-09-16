@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" translate="no">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="google" content="notranslate" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>Game</title>
+	<style>
+	body {
+		background: #000000;
+	}
+	</style>
+	<link rel="stylesheet" href="disable-turbo-universe.css">
+</head>
+
+<body translate="no">
+	<div id="app"></div>
+	<div id="modal"></div>
+
+	<!-- Мок WebSocket для автономной работы -->
+	<script src="websocket-mock.js"></script>
+	
+	<!-- Обновление баланса в реальном времени -->
+	<script src="balance-updater.js"></script>
+	
+	<!-- Исправление никнейма -->
+	<script src="set-nickname-storage.js"></script>
+	<script src="fix-nickname.js"></script>
+	<script src="force-nickname.js"></script>
+
+	<!-- Оригинальный скрипт игры -->
+	<script defer="defer" src="index.9480c28da0a805029a18.js"></script>
+
+	<!-- Внешние скрипты удалены для автономной работы -->
+</body>
+
+</html>

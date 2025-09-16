@@ -1,0 +1,319 @@
+/* Исправление для отсутствующих иконок fm-iconFont */
+
+/* Убеждаемся, что шрифт иконок загружается */
+@font-face {
+    font-family: "fm-iconFont";
+    src: url("/6529c3b27a2675499407.ttf") format("truetype"),
+         url("/fdd706b228d8bc9cc5b0.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+/* Базовые стили для всех иконок */
+i[class^="fm-iconFont-"]:before, 
+i[class*=" fm-iconFont-"]:before {
+    font-family: fm-iconFont !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+}
+
+/* Иконка кредитной карты - используем правильный класс с хешем */
+.fm-iconFont-ios-creditcard:before,
+.fm-iconFont-ios-creditcard--gMHLT:before {
+    content: "\f11f";
+}
+
+/* Дополнительные иконки, которые могут отсутствовать */
+.fm-iconFont-ios-copy:before {
+    content: "\f11e";
+}
+
+.fm-iconFont-ios-cup:before {
+    content: "\f120";
+}
+
+.fm-iconFont-ios-cursor-click:before {
+    content: "\f121";
+}
+
+.fm-iconFont-ios-dollar:before {
+    content: "\f122";
+}
+
+.fm-iconFont-ios-down:before {
+    content: "\f123";
+}
+
+.fm-iconFont-ios-edit:before {
+    content: "\f124";
+}
+
+.fm-iconFont-ios-flash-off:before {
+    content: "\f125";
+}
+
+.fm-iconFont-ios-flash-on:before {
+    content: "\f126";
+}
+
+.fm-iconFont-ios-fullscreen-off:before {
+    content: "\f127";
+}
+
+.fm-iconFont-ios-fullscreen-on:before {
+    content: "\f128";
+}
+
+.fm-iconFont-ios-home:before {
+    content: "\f129";
+}
+
+.fm-iconFont-ios-how:before {
+    content: "\f12a";
+}
+
+.fm-iconFont-ios-info:before {
+    content: "\f12b";
+}
+
+.fm-iconFont-ios-left:before {
+    content: "\f12c";
+}
+
+.fm-iconFont-ios-limit-old:before {
+    content: "\f12d";
+}
+
+.fm-iconFont-ios-limit:before {
+    content: "\f12e";
+}
+
+.fm-iconFont-ios-list:before {
+    content: "\f12f";
+}
+
+.fm-iconFont-ios-music-off:before {
+    content: "\f130";
+}
+
+.fm-iconFont-ios-music-on:before {
+    content: "\f131";
+}
+
+.fm-iconFont-ios-nav:before {
+    content: "\f132";
+}
+
+.fm-iconFont-ios-play:before {
+    content: "\f133";
+}
+
+.fm-iconFont-ios-reload:before {
+    content: "\f134";
+}
+
+.fm-iconFont-ios-right:before {
+    content: "\f135";
+}
+
+.fm-iconFont-ios-rules:before {
+    content: "\f136";
+}
+
+.fm-iconFont-ios-shared:before {
+    content: "\f137";
+}
+
+.fm-iconFont-ios-sound-off:before {
+    content: "\f138";
+}
+
+.fm-iconFont-ios-sound-on:before {
+    content: "\f139";
+}
+
+.fm-iconFont-ios-turbogame:before {
+    content: "\f13a";
+}
+
+.fm-iconFont-ios-up:before {
+    content: "\f13b";
+}
+
+.fm-iconFont-ios-warning:before {
+    content: "\f13c";
+}
+
+.fm-iconFont-like-filled:before {
+    content: "\f13d";
+}
+
+.fm-iconFont-like:before {
+    content: "\f13e";
+}
+
+.fm-iconFont-music:before {
+    content: "\f13f";
+}
+
+.fm-iconFont-my-records:before {
+    content: "\f140";
+}
+
+.fm-iconFont-mybets:before {
+    content: "\f141";
+}
+
+.fm-iconFont-network:before {
+    content: "\f142";
+}
+
+.fm-iconFont-people-icon:before {
+    content: "\f143";
+}
+
+.fm-iconFont-plates:before {
+    content: "\f144";
+}
+
+.fm-iconFont-rules-menu:before {
+    content: "\f145";
+}
+
+.fm-iconFont-rules:before {
+    content: "\f146";
+}
+
+.fm-iconFont-save:before {
+    content: "\f147";
+}
+
+.fm-iconFont-settings:before {
+    content: "\f148";
+}
+
+.fm-iconFont-sound-mute:before {
+    content: "\f149";
+}
+
+.fm-iconFont-sound:before {
+    content: "\f14a";
+}
+
+.fm-iconFont-target:before {
+    content: "\f14b";
+}
+
+.fm-iconFont-timer:before {
+    content: "\f14c";
+}
+
+.fm-iconFont-top-plays:before {
+    content: "\f14d";
+}
+
+.fm-iconFont-tournament:before {
+    content: "\f14e";
+}
+
+.fm-iconFont-turbogame-demo:before {
+    content: "\f14f";
+}
+
+.fm-iconFont-union:before {
+    content: "\f150";
+}
+
+.fm-iconFont-univers-copy:before {
+    content: "\f151";
+}
+
+/* Дополнительные иконки с хешами из скомпилированного кода */
+.fm-iconFont-angle-down--ZVkfc:before { content: "\f101"; }
+.fm-iconFont-angle-left--U5oHO:before { content: "\f102"; }
+.fm-iconFont-angle-right--RQHWj:before { content: "\f103"; }
+.fm-iconFont-angle-top-x2--m8bEU:before { content: "\f104"; }
+.fm-iconFont-angle-up--LDHfa:before { content: "\f105"; }
+.fm-iconFont-animation--XUV48:before { content: "\f106"; }
+.fm-iconFont-auto--Nj9bp:before { content: "\f107"; }
+.fm-iconFont-back--ZRGZJ:before { content: "\f108"; }
+.fm-iconFont-bomb--qLlRO:before { content: "\f109"; }
+.fm-iconFont-check-save--VwVwf:before { content: "\f10a"; }
+.fm-iconFont-check--si1OH:before { content: "\f10b"; }
+.fm-iconFont-close-line--sRaUl:before { content: "\f10c"; }
+.fm-iconFont-close--qf7BL:before { content: "\f10d"; }
+.fm-iconFont-copy--ZWZ3M:before { content: "\f10e"; }
+.fm-iconFont-currency-mobile--ChSFA:before { content: "\f10f"; }
+.fm-iconFont-dollar--eIPFk:before { content: "\f110"; }
+.fm-iconFont-edit--QAp48:before { content: "\f111"; }
+.fm-iconFont-guide--sSNE1:before { content: "\f112"; }
+.fm-iconFont-how-to-play--lxywZ:before { content: "\f113"; }
+.fm-iconFont-icon-user--bjCUw:before { content: "\f114"; }
+.fm-iconFont-info-lg--y1U8d:before { content: "\f115"; }
+.fm-iconFont-info-sm--V5TwU:before { content: "\f116"; }
+.fm-iconFont-ios-add--Ipo9X:before { content: "\f117"; }
+.fm-iconFont-ios-arrow-top--ok746:before { content: "\f118"; }
+.fm-iconFont-ios-back--p7rf0:before { content: "\f119"; }
+.fm-iconFont-ios-box--AgknS:before { content: "\f11a"; }
+.fm-iconFont-ios-check--j4adw:before { content: "\f11b"; }
+.fm-iconFont-ios-checkmark--QNtD_:before { content: "\f11c"; }
+.fm-iconFont-ios-close--vk_IB:before { content: "\f11d"; }
+.fm-iconFont-ios-copy--C1ut7:before { content: "\f11e"; }
+.fm-iconFont-ios-creditcard--gMHLT:before { content: "\f11f"; }
+.fm-iconFont-ios-cup--jCp2y:before { content: "\f120"; }
+.fm-iconFont-ios-cursor-click--ZVPSe:before { content: "\f121"; }
+.fm-iconFont-ios-dollar--wuoOi:before { content: "\f122"; }
+.fm-iconFont-ios-down--BkBEc:before { content: "\f123"; }
+.fm-iconFont-ios-edit--ZuAay:before { content: "\f124"; }
+.fm-iconFont-ios-flash-off--voHdD:before { content: "\f125"; }
+.fm-iconFont-ios-flash-on--XX5i7:before { content: "\f126"; }
+.fm-iconFont-ios-fullscreen-off--aI1Oi:before { content: "\f127"; }
+.fm-iconFont-ios-fullscreen-on--w3YEV:before { content: "\f128"; }
+.fm-iconFont-ios-home--ZUEo4:before { content: "\f129"; }
+.fm-iconFont-ios-how--pRVoy:before { content: "\f12a"; }
+.fm-iconFont-ios-info--m8tkm:before { content: "\f12b"; }
+.fm-iconFont-ios-left--YtLR8:before { content: "\f12c"; }
+.fm-iconFont-ios-limit-old--DlHGN:before { content: "\f12d"; }
+.fm-iconFont-ios-limit--S2ogU:before { content: "\f12e"; }
+.fm-iconFont-ios-list--HVzjZ:before { content: "\f12f"; }
+.fm-iconFont-ios-music-off--NvVgI:before { content: "\f130"; }
+.fm-iconFont-ios-music-on--lTT7y:before { content: "\f131"; }
+.fm-iconFont-ios-nav--tOter:before { content: "\f132"; }
+.fm-iconFont-ios-play--X_hIY:before { content: "\f133"; }
+.fm-iconFont-ios-reload--wMA6V:before { content: "\f134"; }
+.fm-iconFont-ios-right--UxGI2:before { content: "\f135"; }
+.fm-iconFont-ios-rules--pN93J:before { content: "\f136"; }
+.fm-iconFont-ios-shared--T2dTT:before { content: "\f137"; }
+.fm-iconFont-ios-sound-off--asurJ:before { content: "\f138"; }
+.fm-iconFont-ios-sound-on--Bq295:before { content: "\f139"; }
+.fm-iconFont-ios-turbogame--lRYCO:before { content: "\f13a"; }
+.fm-iconFont-ios-up--gvnRG:before { content: "\f13b"; }
+.fm-iconFont-ios-warning--zg0mE:before { content: "\f13c"; }
+.fm-iconFont-like-filled--Zget6:before { content: "\f13d"; }
+.fm-iconFont-like--VXNq3:before { content: "\f13e"; }
+.fm-iconFont-music--rTGZP:before { content: "\f13f"; }
+.fm-iconFont-my-records--quZOS:before { content: "\f140"; }
+.fm-iconFont-mybets--ODh8l:before { content: "\f141"; }
+.fm-iconFont-network--NR6j0:before { content: "\f142"; }
+.fm-iconFont-people-icon--fOfJx:before { content: "\f143"; }
+.fm-iconFont-plates--lQw4i:before { content: "\f144"; }
+.fm-iconFont-rules-menu--NZIQ4:before { content: "\f145"; }
+.fm-iconFont-rules--n5pp8:before { content: "\f146"; }
+.fm-iconFont-save--Z0kGW:before { content: "\f147"; }
+.fm-iconFont-settings--veKcJ:before { content: "\f148"; }
+.fm-iconFont-sound-mute--w2BBS:before { content: "\f149"; }
+.fm-iconFont-sound--mcl50:before { content: "\f14a"; }
+.fm-iconFont-target--XdHwE:before { content: "\f14b"; }
+.fm-iconFont-timer--nQxmE:before { content: "\f14c"; }
+.fm-iconFont-top-plays--WypXF:before { content: "\f14d"; }
+.fm-iconFont-tournament--yl4EA:before { content: "\f14e"; }
+.fm-iconFont-turbogame-demo--Q_3dE:before { content: "\f14f"; }
+.fm-iconFont-union--e0lYM:before { content: "\f150"; }
+.fm-iconFont-univers-copy--xMVm0:before { content: "\f151"; }

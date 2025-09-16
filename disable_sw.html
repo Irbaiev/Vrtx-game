@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Отключение Service Worker</title>
+</head>
+<body>
+    <h1>Отключение Service Worker</h1>
+    <p>Нажмите кнопку, чтобы отключить Service Worker:</p>
+    <button onclick="unregisterSW()">Отключить Service Worker</button>
+    <p id="status"></p>
+    
+    <script>
+        async function unregisterSW() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (let registration of registrations) {
+                        await registration.unregister();
+                        console.log('Service Worker отключен:', registration.scope);
+                    }
+                    document.getElementById('status').innerHTML = '✅ Service Worker отключен! Теперь перезагрузите страницу игры.';
+                } catch (error) {
+                    console.error('Ошибка отключения Service Worker:', error);
+                    document.getElementById('status').innerHTML = '❌ Ошибка отключения Service Worker: ' + error;
+                }
+            } else {
+                document.getElementById('status').innerHTML = 'Service Worker не поддерживается';
+            }
+        }
+    </script>
+</body>
+</html>

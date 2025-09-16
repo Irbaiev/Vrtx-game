@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "functions": {
+    "app.py": {
+      "runtime": "python3.9"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/app.py"
+    },
+    {
+      "source": "/v2/api/(.*)",
+      "destination": "/app.py"
+    }
+  ]
+}

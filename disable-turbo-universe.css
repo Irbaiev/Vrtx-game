@@ -1,0 +1,19 @@
+/* Отключение Turbo Universe - только клики, без изменения внешнего вида */
+[data-track="universe"],
+[data-track="settings.turbouniverse"],
+.iconTurboUniverse--Of1Ih {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+/* Убираем hover эффекты, но сохраняем нормальный вид */
+[data-track="universe"]:hover,
+[data-track="settings.turbouniverse"]:hover,
+.iconTurboUniverse--Of1Ih:hover {
+  pointer-events: none !important;
+  cursor: default !important;
+  /* Убираем любые hover эффекты */
+  transform: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

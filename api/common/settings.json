@@ -1,0 +1,7 @@
+{
+  "forceDemoAvailable": true,
+  "availableTranslations": ["en", "ru"],
+  "red": [1, 2, 3, 4, 5, 6],
+  "green": [1, 2, 3, 4, 5, 6],
+  "blue": [1, 2, 3, 4, 5, 6]
+}

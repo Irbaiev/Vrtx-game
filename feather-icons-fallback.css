@@ -1,0 +1,83 @@
+/* Fallback для Feather Icons */
+
+/* Базовые стили для Feather Icons */
+i[class^="fi-"]:before, 
+i[class*=" fi-"]:before {
+    font-family: "feather", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+}
+
+/* Иконка кредитной карты - используем эмодзи как fallback */
+.fi-rr-credit-card:before,
+.fi-credit-card:before {
+    content: "💳";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif !important;
+    font-size: 1.2em;
+}
+
+/* Дополнительные иконки Feather Icons */
+.fi-home:before { content: "🏠"; }
+.fi-settings:before { content: "⚙️"; }
+.fi-info:before { content: "ℹ️"; }
+.fi-play:before { content: "▶️"; }
+.fi-pause:before { content: "⏸️"; }
+.fi-volume:before { content: "🔊"; }
+.fi-volume-off:before { content: "🔇"; }
+.fi-menu:before { content: "☰"; }
+.fi-close:before { content: "✕"; }
+.fi-check:before { content: "✓"; }
+.fi-plus:before { content: "+"; }
+.fi-minus:before { content: "−"; }
+.fi-arrow-left:before { content: "←"; }
+.fi-arrow-right:before { content: "→"; }
+.fi-arrow-up:before { content: "↑"; }
+.fi-arrow-down:before { content: "↓"; }
+.fi-search:before { content: "🔍"; }
+.fi-user:before { content: "👤"; }
+.fi-heart:before { content: "♥"; }
+.fi-star:before { content: "★"; }
+.fi-share:before { content: "📤"; }
+.fi-download:before { content: "⬇"; }
+.fi-upload:before { content: "⬆"; }
+.fi-edit:before { content: "✏"; }
+.fi-trash:before { content: "🗑"; }
+.fi-save:before { content: "💾"; }
+.fi-folder:before { content: "📁"; }
+.fi-file:before { content: "📄"; }
+.fi-image:before { content: "🖼"; }
+.fi-video:before { content: "🎥"; }
+.fi-music:before { content: "🎵"; }
+.fi-camera:before { content: "📷"; }
+.fi-phone:before { content: "📞"; }
+.fi-mail:before { content: "✉"; }
+.fi-calendar:before { content: "📅"; }
+.fi-clock:before { content: "🕐"; }
+.fi-map:before { content: "🗺"; }
+.fi-flag:before { content: "🏁"; }
+.fi-gift:before { content: "🎁"; }
+.fi-lock:before { content: "🔒"; }
+.fi-unlock:before { content: "🔓"; }
+.fi-eye:before { content: "👁"; }
+.fi-eye-off:before { content: "👁‍🗨"; }
+.fi-shield:before { content: "🛡"; }
+.fi-key:before { content: "🔑"; }
+.fi-wifi:before { content: "📶"; }
+.fi-battery:before { content: "🔋"; }
+.fi-sun:before { content: "☀"; }
+.fi-moon:before { content: "🌙"; }
+.fi-cloud:before { content: "☁"; }
+.fi-rain:before { content: "🌧"; }
+.fi-snow:before { content: "❄"; }
+.fi-fire:before { content: "🔥"; }
+.fi-water:before { content: "💧"; }
+.fi-earth:before { content: "🌍"; }
+.fi-wind:before { content: "💨"; }
+.fi-nature:before { content: "🌿"; }
+.fi-skull:before { content: "💀"; }

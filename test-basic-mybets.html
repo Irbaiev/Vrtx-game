@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест базовой функциональности MyBets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-section {
+            background: #333;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 4px solid #4ecdc4;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #5a6fd8; }
+        pre { 
+            background: #222; 
+            padding: 10px; 
+            border-radius: 3px; 
+            overflow-x: auto; 
+            font-size: 12px;
+            max-height: 300px;
+        }
+        .bet-item {
+            background: #444;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border-left: 3px solid #4ecdc4;
+        }
+        .bet-item.won { border-left-color: #4ecdc4; }
+        .bet-item.lose { border-left-color: #ff6b6b; }
+        .bet-item.pending { border-left-color: #ffd93d; }
+    </style>
+</head>
+<body>
+    <h1>📊 Тест базовой функциональности MyBets</h1>
+    
+    <div class="test-section">
+        <h2>🎯 Что тестируем</h2>
+        <p>• API endpoint `/api/common/bets/my` - история ставок</p>
+        <p>• Отображение статичной истории ставок в игре</p>
+        <p>• Без вкладки "Подробно" - только список ставок</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>🧪 Тестирование</h2>
+        <button onclick="testMyBetsAPI()">Тест API MyBets</button>
+        <button onclick="testAllBets()">Показать все ставки</button>
+        <button onclick="clearResults()">Очистить</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 Результат</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        function addResult(title, data) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = 'test-section';
+            div.innerHTML = `
+                <h3>✅ ${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+            results.appendChild(div);
+        }
+
+        function addBetsList(bets) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = 'test-section';
+            
+            const betsHtml = bets.map(bet => `
+                <div class="bet-item ${bet.result}">
+                    <strong>${bet.id}</strong> - $${bet.amount} → $${bet.payout} 
+                    ${bet.coefficient > 0 ? `(${bet.coefficient}x)` : ''} 
+                    <span style="color: ${bet.result === 'won' ? '#4ecdc4' : bet.result === 'lose' ? '#ff6b6b' : '#ffd93d'}">
+                        ${bet.result.toUpperCase()}
+                    </span>
+                </div>
+            `).join('');
+            
+            div.innerHTML = `
+                <h3>📋 Список ставок (${bets.length})</h3>
+                ${betsHtml}
+            `;
+            results.appendChild(div);
+        }
+
+        async function testMyBetsAPI() {
+            try {
+                console.log('🧪 Тестируем API MyBets...');
+                const response = await fetch('/api/common/bets/my');
+                console.log('📡 Ответ получен:', response.status);
+                
+                const data = await response.json();
+                console.log('📊 Данные:', data);
+                
+                addResult('API MyBets - ответ', {
+                    status: response.status,
+                    count: data.length,
+                    firstBet: data[0] || null
+                });
+                
+                if (data.length > 0) {
+                    addBetsList(data);
+                }
+            } catch (error) {
+                console.error('❌ Ошибка:', error);
+                addResult('Ошибка API MyBets', { error: error.message });
+            }
+        }
+
+        async function testAllBets() {
+            try {
+                const response = await fetch('/api/common/bets/my');
+                const data = await response.json();
+                
+                addBetsList(data);
+                
+                // Статистика
+                const stats = {
+                    total: data.length,
+                    won: data.filter(b => b.result === 'won').length,
+                    lose: data.filter(b => b.result === 'lose').length,
+                    pending: data.filter(b => b.result === 'pending').length,
+                    totalAmount: data.reduce((sum, b) => sum + b.amount, 0),
+                    totalPayout: data.reduce((sum, b) => sum + b.payout, 0)
+                };
+                
+                addResult('Статистика ставок', stats);
+            } catch (error) {
+                addResult('Ошибка получения ставок', { error: error.message });
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Автоматический тест при загрузке
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testMyBetsAPI();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

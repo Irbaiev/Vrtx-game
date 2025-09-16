@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест MyBets API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-result {
+            background: #333;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { border-left: 4px solid #4ecdc4; }
+        .error { border-left: 4px solid #ff6b6b; }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #5a6fd8; }
+        pre { background: #222; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Тест MyBets API</h1>
+    
+    <button onclick="testHistoryAPI()">Тест /api/games/history</button>
+    <button onclick="testProfileAPI()">Тест /api/common/profile</button>
+    <button onclick="clearResults()">Очистить результаты</button>
+    
+    <div id="results"></div>
+
+    <script>
+        function addResult(title, success, data) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${success ? 'success' : 'error'}`;
+            div.innerHTML = `
+                <h3>${success ? '✅' : '❌'} ${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+            results.appendChild(div);
+        }
+
+        async function testHistoryAPI() {
+            try {
+                const response = await fetch('/api/common/bets/my?gameId=vortex&limit=5&offset=0');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('История ставок', true, {
+                        status: response.status,
+                        count: data.length,
+                        firstBet: data[0],
+                        lastBet: data[data.length - 1]
+                    });
+                } else {
+                    addResult('История ставок', false, {
+                        status: response.status,
+                        error: data
+                    });
+                }
+            } catch (error) {
+                addResult('История ставок', false, { error: error.message });
+            }
+        }
+
+        async function testProfileAPI() {
+            try {
+                const response = await fetch('/api/common/profile', { method: 'POST' });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('Профиль пользователя', true, {
+                        status: response.status,
+                        profile: data
+                    });
+                } else {
+                    addResult('Профиль пользователя', false, {
+                        status: response.status,
+                        error: data
+                    });
+                }
+            } catch (error) {
+                addResult('Профиль пользователя', false, { error: error.message });
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Автоматический тест при загрузке
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testHistoryAPI();
+                testProfileAPI();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+(self.webpackChunkfederation_modules =
+  self.webpackChunkfederation_modules || []).push([[8009], { 8009: () => {} }]);

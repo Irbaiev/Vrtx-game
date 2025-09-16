@@ -1,0 +1,87 @@
+/* Отключение кнопки "Подробно" в MyBets - только клики, без изменения внешнего вида */
+
+/* Блокируем клики по кнопкам "Подробно" только в MyBets */
+/* Точный селектор для найденной кнопки E.Q.Info */
+.mybets [class*="Info"],
+.mybets [class*="info"],
+.mybets [class*="details"],
+.mybets [class*="more"],
+[class*="mybets"] [class*="Info"],
+[class*="mybets"] [class*="info"],
+[class*="mybets"] [class*="details"],
+[class*="mybets"] [class*="more"],
+[class*="mybetsRow"] [class*="Info"],
+[class*="mybetsRow"] [class*="info"],
+[class*="mybetsRow"] [class*="details"],
+[class*="mybetsRow"] [class*="more"],
+[data-page="mybets"] [class*="Info"],
+[data-page="mybets"] [class*="info"],
+[data-page="mybets"] [class*="details"],
+[data-page="mybets"] [class*="more"],
+/* Дополнительные селекторы для найденной кнопки */
+div[class*="mybetsRow"] [class*="Info"],
+div[class*="mybetsRow"] [class*="info"],
+div[class*="mybetsRow"] [class*="details"],
+div[class*="mybetsRow"] [class*="more"] {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+/* Убираем hover эффекты, но сохраняем нормальный вид */
+.mybets [class*="Info"]:hover,
+.mybets [class*="info"]:hover,
+.mybets [class*="details"]:hover,
+.mybets [class*="more"]:hover,
+[class*="mybets"] [class*="Info"]:hover,
+[class*="mybets"] [class*="info"]:hover,
+[class*="mybets"] [class*="details"]:hover,
+[class*="mybets"] [class*="more"]:hover,
+[class*="mybetsRow"] [class*="Info"]:hover,
+[class*="mybetsRow"] [class*="info"]:hover,
+[class*="mybetsRow"] [class*="details"]:hover,
+[class*="mybetsRow"] [class*="more"]:hover,
+[data-page="mybets"] [class*="Info"]:hover,
+[data-page="mybets"] [class*="info"]:hover,
+[data-page="mybets"] [class*="details"]:hover,
+[data-page="mybets"] [class*="more"]:hover,
+/* Дополнительные hover селекторы для найденной кнопки */
+div[class*="mybetsRow"] [class*="Info"]:hover,
+div[class*="mybetsRow"] [class*="info"]:hover,
+div[class*="mybetsRow"] [class*="details"]:hover,
+div[class*="mybetsRow"] [class*="more"]:hover {
+  pointer-events: none !important;
+  cursor: default !important;
+  /* Убираем любые hover эффекты */
+  transform: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Дополнительные селекторы для кнопок в MyBets */
+div[class*="mybets"] button[class*="Info"],
+div[class*="mybets"] button[class*="info"],
+div[class*="mybets"] button[class*="details"],
+div[class*="mybets"] button[class*="more"],
+div[class*="mybets"] [class*="Info"],
+div[class*="mybets"] [class*="info"],
+div[class*="mybets"] [class*="details"],
+div[class*="mybets"] [class*="more"] {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+/* Блокируем hover для дополнительных селекторов */
+div[class*="mybets"] button[class*="Info"]:hover,
+div[class*="mybets"] button[class*="info"]:hover,
+div[class*="mybets"] button[class*="details"]:hover,
+div[class*="mybets"] button[class*="more"]:hover,
+div[class*="mybets"] [class*="Info"]:hover,
+div[class*="mybets"] [class*="info"]:hover,
+div[class*="mybets"] [class*="details"]:hover,
+div[class*="mybets"] [class*="more"]:hover {
+  pointer-events: none !important;
+  cursor: default !important;
+  transform: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

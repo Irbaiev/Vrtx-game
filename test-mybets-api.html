@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест MyBets API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-result {
+            background: #333;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4ecdc4;
+        }
+        pre { 
+            background: #222; 
+            padding: 10px; 
+            border-radius: 3px; 
+            overflow-x: auto; 
+            font-size: 12px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #5a6fd8; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Тест MyBets API</h1>
+    
+    <button onclick="testMyBetsAPI()">Тест /api/common/bets/my</button>
+    <button onclick="clearResults()">Очистить</button>
+    
+    <div id="results"></div>
+
+    <script>
+        function addResult(title, data) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = 'test-result';
+            div.innerHTML = `
+                <h3>✅ ${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+            results.appendChild(div);
+        }
+
+        async function testMyBetsAPI() {
+            try {
+                console.log('Тестируем /api/common/bets/my...');
+                const response = await fetch('/api/common/bets/my?gameId=vortex&limit=5&offset=0');
+                console.log('Ответ получен:', response.status);
+                
+                const data = await response.json();
+                console.log('Данные:', data);
+                
+                addResult('MyBets API', {
+                    status: response.status,
+                    count: data.length,
+                    firstBet: data[0] || 'Нет данных',
+                    allBets: data
+                });
+            } catch (error) {
+                console.error('Ошибка:', error);
+                addResult('MyBets API - Ошибка', { error: error.message });
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Автоматический тест при загрузке
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testMyBetsAPI();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

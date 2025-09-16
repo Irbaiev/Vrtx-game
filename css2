@@ -1,0 +1,51 @@
+/* Локальные стили для замены внешних шрифтов */
+@import url('font.css');
+
+/* Основные стили игры */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Jost', Arial, sans-serif;
+    background: #000000;
+    overflow: hidden;
+}
+
+#app {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+/* Стили для элементов игры */
+.game-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Стили для кнопок */
+button {
+    font-family: 'Jost', Arial, sans-serif;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Стили для текста */
+.text {
+    font-family: 'Jost', Arial, sans-serif;
+    color: #ffffff;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+}

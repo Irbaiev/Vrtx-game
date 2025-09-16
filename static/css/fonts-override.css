@@ -1,0 +1,23 @@
+/* 1) Подключаем Jost, который реально лежит у нас */
+@font-face {
+  font-family: "Jost";
+  src: url("/static/fonts/Jost-ExtraBoldItalic.woff2") format("woff2"),
+       url("/static/fonts/Jost-ExtraBoldItalic.woff") format("woff"),
+       url("/static/fonts/Jost-ExtraBoldItalic.ttf") format("truetype");
+  font-weight: 800;     /* ExtraBold */
+  font-style: italic;
+  font-display: swap;
+}
+
+/* 2) Для текста по кольцам форсим нужный шрифт,
+      чтобы перебить любые @font-face из бандла */
+[data-ring-label],
+text[data-ring-label],
+.ring__label text {
+  font-family: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+  font-weight: 800 !important;
+  font-style: italic !important;
+  letter-spacing: .02em;
+  fill: #fff;
+  color: #fff;
+}

@@ -1,0 +1,45 @@
+/* Скрытие прелоадера TURBO GAMES */
+.preloader--RNQlG {
+    display: none !important;
+}
+
+/* .name--TP6Ls {
+    display: none !important;
+} */
+
+.preloaderImg--zJ7gU {
+    display: none !important;
+}
+
+.preloaderVideo--dZyjs {
+    display: none !important;
+}
+
+/* Добавить иконку кошелька к балансу только на мобильных */
+.balance--Kjiqa::before {
+    content: "\f11f";
+    font-family: "fm-iconFont";
+    margin-right: 0.375rem;
+    display: inline-block;
+}
+
+/* На больших экранах (ПК) скрыть иконку, показать полный баланс */
+@media screen and (min-width: 768px) {
+    .balance--Kjiqa::before {
+        display: none !important;
+    }
+    
+    .balanceTitle--JnSFJ {
+        display: inline-flex !important;
+    }
+}
+
+/* Скрытие текста "Turbo Games • Vortex" - ОТКЛЮЧЕНО */
+/* .name--TP6Ls {
+    display: none !important;
+} */
+
+/* Скрытие иконки Turbo Universe */
+/* .iconTurboUniverse--Of1Ih {
+    display: none !important;
+} */

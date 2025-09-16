@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "msw": "^2.11.2",
+    "prettier": "3.6.2"
+  }
+}

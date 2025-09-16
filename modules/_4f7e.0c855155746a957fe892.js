@@ -1,0 +1,5 @@
+(self.webpackChunkfederation_clients =
+  self.webpackChunkfederation_clients || []).push([
+  ["_4f7e"],
+  { "?4f7e": () => {} },
+]);
