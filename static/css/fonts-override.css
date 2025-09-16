@@ -6,7 +6,7 @@
        url("/static/fonts/Jost-ExtraBoldItalic.ttf") format("truetype");
   font-weight: 800;     /* ExtraBold */
   font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 /* 2) Для текста по кольцам форсим нужный шрифт,

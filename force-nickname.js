@@ -76,27 +76,8 @@ function forceSetInGlobalObjects() {
   }
 }
 
-// Функция для принудительного обновления UI
-function forceUpdateUI() {
-  console.log('[FORCE-NICKNAME] Принудительно обновляем UI...');
-  
-  // Ищем все элементы с текстом, которые могут содержать никнейм
-  const textElements = document.querySelectorAll('*');
-  
-  for (const element of textElements) {
-    if (element.textContent && element.textContent.trim() === '') {
-      // Если элемент пустой, возможно это поле для никнейма
-      if (element.tagName === 'INPUT' || element.tagName === 'SPAN' || element.tagName === 'DIV') {
-        if (element.classList.toString().toLowerCase().includes('nickname') ||
-            element.id.toLowerCase().includes('nickname') ||
-            element.getAttribute('data-field') === 'nickname') {
-          element.textContent = 'vortex';
-          console.log('[FORCE-NICKNAME] ✅ Установлен текст в элементе:', element);
-        }
-      }
-    }
-  }
-}
+// Функция для принудительного обновления UI - ОТКЛЮЧЕНА
+// (удалена, чтобы не закрывать настройки)
 
 // Основная функция
 function initForceNickname() {
@@ -108,23 +89,17 @@ function initForceNickname() {
   // 2. Пытаемся через API
   forceSetNicknameViaAPI();
   
-  // 3. Принудительно обновляем UI
-  forceUpdateUI();
-  
-  // 4. Повторяем через интервалы
+  // 3. Повторяем через интервалы (без обновления UI)
   setTimeout(() => {
     forceSetInGlobalObjects();
-    forceUpdateUI();
   }, 2000);
   
   setTimeout(() => {
     forceSetInGlobalObjects();
-    forceUpdateUI();
   }, 5000);
   
   setTimeout(() => {
     forceSetInGlobalObjects();
-    forceUpdateUI();
   }, 10000);
   
   console.log('[FORCE-NICKNAME] ✅ Инициализация завершена');
