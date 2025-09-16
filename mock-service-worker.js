@@ -5,7 +5,7 @@ console.log('[MSW] Service Worker загружен');
 let BALANCE = 1000; // стартовый баланс
 
 // Белый список разрешенных хостов
-const ALLOW_HOSTS = ['localhost', '127.0.0.1', 'vort-gamesss.vercel.app'];
+const ALLOW_HOSTS = ['localhost', '127.0.0.1', 'vrtx-game-33f9.vercel.app'];
 
 self.addEventListener('install', (event) => {
   console.log('[MSW] Service Worker: install');
