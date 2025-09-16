@@ -573,17 +573,20 @@ function applySymbol(prev, sym) {
         symbol: 'SymbolNeutral',
         cashable: prev.cashable
       };
-    case 'SymbolLoss': // череп -> полный рестарт
-      col[0] = col[1] = col[2] = 0;
-      historySymbols = [];
+    case 'SymbolLoss': // череп -> шаг назад на 1 для всех колец
+      // Шаг назад на 1 для всех элементов (НЕ трогаем баланс)
+      const before = [...col];
+      col = col.map(v => typeof v === 'number' ? Math.max(0, v - 1) : v);
+      
+      console.log('💀 [MSW] ЧЕРЕП в applySymbol — шаг назад на 1. Было:', before, 'Стало:', col);
       
       return {
-        initial: true,
-        collection: [0, 0, 0],
+        initial: col.every(v => v === 0), // initial только если все кольца на 0
+        collection: col,
         bonusWin: 0,
         superBonus: false,
         symbol: 'SymbolLoss', // показываем череп
-        cashable: false
+        cashable: col.some(v => v > 0) // кэшаут доступен если есть прогресс
       };
   }
 
@@ -686,26 +689,36 @@ self.addEventListener('fetch', (event) => {
           console.log('🎯 [MSW] ЦВЕТНОЙ СИМВОЛ - прогресс по кольцам');
         }
 
-        // ==== Если выпал ЧЕРЕП — мгновенный полный рестарт ====
+        // ==== Если выпал ЧЕРЕП — шаг назад на 1 для всех колец ====
         if (sym === 'SymbolLoss') {
-          console.log('💀 [MSW] ЧЕРЕП! Игра обнуляется! Предыдущее состояние:', lastState.collection);
-          
+          // Череп: шаг назад на 1 для всех элементов (НЕ трогаем баланс, не даём откат)
+          const before = Array.isArray(lastState.collection) ? [...lastState.collection] : [0, 0, 0];
+
+          const newCollection = (lastState.collection || [0, 0, 0]).map(v =>
+            typeof v === 'number' ? Math.max(0, v - 1) : v
+          );
+
+          // Денежные эффекты = 0
+          const payout = 0;
+          const coefficient = 0;
+
+          console.log('💀 [MSW] ЧЕРЕП — шаг назад на 1. Было:', before, 'Стало:', newCollection);
+
           roundCounter += 1;
           lastState = {
-            initial: true,
-            collection: [0,0,0],
+            initial: newCollection.every(v => v === 0), // initial только если все кольца на 0
+            collection: newCollection,
             bonusWin: 0,
             superBonus: false,
             symbol: 'SymbolLoss', // показываем череп как символ
-            cashable: false
+            cashable: newCollection.some(v => v > 0) // кэшаут доступен если есть прогресс
           };
-          historySymbols = [];
 
           return createJsonResponse({
             state: lastState,
             result: 'lose',
-            payout: 0,
-            coefficient: 0,
+            payout: payout,
+            coefficient: coefficient,
             autocashout: false,
             roundId: `round-${roundCounter}`
           });
