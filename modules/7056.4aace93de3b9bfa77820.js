@@ -397,24 +397,46 @@
                 this.updatePartialCoefficient(),
                 "ringsofolympus" === this.gameServerTheme && !t.superBonus)
               ) {
-                if (t.exCollection)
-                  return (
-                    v.x.invoke("setStep", t.exCollection),
-                    this.cashoutTimeout && clearTimeout(this.cashoutTimeout),
-                    (this.cashoutTimeout = setTimeout(() => {
-                      v.x.invoke("setStep", t.collection);
-                    }, 600)),
-                    null
-                  );
+                if (t.exCollection) {
+                  v.x.invoke("setStep", t.exCollection);
+                  this.cashoutTimeout && clearTimeout(this.cashoutTimeout);
+                  this.cashoutTimeout = setTimeout(() => {
+                    // Устанавливаем финальное состояние с правильной анимацией
+                    const finalState = t.bonusWin && t.symbol
+                      ? t.collection.map((e, o) => {
+                          const shouldAdd = ("Symbol1" === t.symbol && 2 === o) ||
+                                          ("Symbol2" === t.symbol && 1 === o) ||
+                                          ("Symbol3" === t.symbol && 0 === o);
+                          
+                          if (shouldAdd) {
+                            // Показываем анимацию даже когда кольцо уже на MAX или на предпоследней линии или на предпоследней линии
+                            if (t.symbol === "Symbol1") return e + 1;
+                            if (t.symbol === "Symbol2") return e + 1;
+                            if (t.symbol === "Symbol3") return e + 1;
+                          }
+                          return e;
+                        })
+                      : t.collection;
+                    v.x.invoke("setStep", finalState);
+                  }, 600);
+                  return null;
+                }
                 const e =
                   t.bonusWin && t.symbol
-                    ? t.collection.map((e, o) =>
-                        ("Symbol1" === t.symbol && 2 === o) ||
-                        ("Symbol2" === t.symbol && 1 === o) ||
-                        ("Symbol3" === t.symbol && 0 === o)
-                          ? e + 1
-                          : e
-                      )
+                    ? t.collection.map((e, o) => {
+                        // Проверяем, нужно ли добавлять +1 для анимации
+                        const shouldAdd = ("Symbol1" === t.symbol && 2 === o) ||
+                                        ("Symbol2" === t.symbol && 1 === o) ||
+                                        ("Symbol3" === t.symbol && 0 === o);
+                        
+                        if (shouldAdd) {
+                          // Показываем анимацию даже когда кольцо уже на MAX или на предпоследней линии
+                          if (t.symbol === "Symbol1") return e + 1;
+                          if (t.symbol === "Symbol2") return e + 1;
+                          if (t.symbol === "Symbol3") return e + 1;
+                        }
+                        return e;
+                      })
                     : t.collection;
                 this.cashoutProcessing
                   ? (this.cashoutTimeout && clearTimeout(this.cashoutTimeout),
@@ -458,17 +480,13 @@
                   this.setCoefficent(s.coefficient),
                   this.setPayout(s.payout),
                   this.setRoundId(s.roundId),
-                  // [BALANCE] increment by ticketId (применится после updateBalanceFromTicketId)
-                  !this.isFreebetEnabled && (() => {
-                    const balNow = Number(this.root.profileCommon.profile.balance || 0);
-                    const fin = +(balNow + Number(s.payout || 0));
-                    this.root.balanceCommon.setBalanceData([fin, this.prevRoundId, s.result || "won"]);
-                    // NEW: используем MobX action для обновления баланса
-                    this.root.profileCommon.setBalance(fin);
-                    // NEW: кросс-бандловый мост для UI
-                    window.__balance = fin;
-                    window.dispatchEvent(new CustomEvent('balance:update', { detail: { balance: fin }}));
-                    // NEW: форс-рефреш профиля, если UI подписан на API-профиль
+                  // Обновляем баланс из response.balance (уже обновлен в MSW)
+                  !this.isFreebetEnabled && s?.balance && (() => {
+                    const newBalance = Number(s.balance);
+                    this.root.balanceCommon.setBalanceData([newBalance, this.prevRoundId, s.result || "won"]);
+                    this.root.profileCommon.setBalance(newBalance);
+                    window.__balance = newBalance;
+                    window.dispatchEvent(new CustomEvent('balance:update', { detail: { balance: newBalance }}));
                     this.safeRefreshProfile();
                   })(),
                   (this.cashoutProcessing = !1),
@@ -714,6 +732,27 @@
                               this.placeBetIsHeld && this.placeBet());
                           }, this.gameConfig.superBonusDuration)))
                         : this.setGameState(a),
+                      // проверяем delta для предотвращения ложной анимации
+                      Array.isArray(n.delta) && (() => {
+                        const moved = n.delta.some(d => d !== 0);
+                        if (!moved) {
+                          console.log('[FRONTEND] Кольца не сдвигались (например, попадание в MAX), но показываем анимацию через exCollection');
+                          // ничего не делаем: кольца не сдвигались, но анимация будет через exCollection
+                        } else {
+                          console.log('[FRONTEND] Кольца сдвинулись, можно запускать анимацию');
+                          // обычная анимация шага
+                        }
+                      })(),
+                      // Обновляем баланс из response.balance (уже обновлен в MSW)
+                      !this.isFreebetEnabled && n?.balance && (() => {
+                        const newBalance = Number(n.balance);
+                        console.log('[FRONTEND] 💰 Обновляем баланс из ответа:', n.balance, '→', newBalance);
+                        this.root.balanceCommon.setBalanceData([newBalance, this.prevRoundId, u || "won"]);
+                        this.root.profileCommon.setBalance(newBalance);
+                        window.__balance = newBalance;
+                        window.dispatchEvent(new CustomEvent("balance:update", { detail: { balance: newBalance }}));
+                        this.safeRefreshProfile();
+                      })(),
                       a.bonusWin &&
                         !I &&
                         setTimeout(() => {

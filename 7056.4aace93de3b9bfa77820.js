@@ -398,24 +398,46 @@
                 this.updatePartialCoefficient(),
                 "ringsofolympus" === this.gameServerTheme && !t.superBonus)
               ) {
-                if (t.exCollection)
-                  return (
-                    v.x.invoke("setStep", t.exCollection),
-                    this.cashoutTimeout && clearTimeout(this.cashoutTimeout),
-                    (this.cashoutTimeout = setTimeout(() => {
-                      v.x.invoke("setStep", t.collection);
-                    }, 600)),
-                    null
-                  );
+                if (t.exCollection) {
+                  v.x.invoke("setStep", t.exCollection);
+                  this.cashoutTimeout && clearTimeout(this.cashoutTimeout);
+                  this.cashoutTimeout = setTimeout(() => {
+                    // Устанавливаем финальное состояние с правильной анимацией
+                    const finalState = t.bonusWin && t.symbol
+                      ? t.collection.map((e, o) => {
+                          const shouldAdd = ("Symbol1" === t.symbol && 2 === o) ||
+                                          ("Symbol2" === t.symbol && 1 === o) ||
+                                          ("Symbol3" === t.symbol && 0 === o);
+                          
+                          if (shouldAdd) {
+                            // Показываем анимацию даже когда кольцо уже на MAX или на предпоследней линии
+                            if (t.symbol === "Symbol1") return e + 1;
+                            if (t.symbol === "Symbol2") return e + 1;
+                            if (t.symbol === "Symbol3") return e + 1;
+                          }
+                          return e;
+                        })
+                      : t.collection;
+                    v.x.invoke("setStep", finalState);
+                  }, 600);
+                  return null;
+                }
                 const e =
                   t.bonusWin && t.symbol
-                    ? t.collection.map((e, o) =>
-                        ("Symbol1" === t.symbol && 2 === o) ||
-                        ("Symbol2" === t.symbol && 1 === o) ||
-                        ("Symbol3" === t.symbol && 0 === o)
-                          ? e + 1
-                          : e
-                      )
+                    ? t.collection.map((e, o) => {
+                        // Проверяем, нужно ли добавлять +1 для анимации
+                        const shouldAdd = ("Symbol1" === t.symbol && 2 === o) ||
+                                        ("Symbol2" === t.symbol && 1 === o) ||
+                                        ("Symbol3" === t.symbol && 0 === o);
+                        
+                        if (shouldAdd) {
+                          // Показываем анимацию даже когда кольцо уже на MAX или на предпоследней линии
+                          if (t.symbol === "Symbol1") return e + 1;
+                          if (t.symbol === "Symbol2") return e + 1;
+                          if (t.symbol === "Symbol3") return e + 1;
+                        }
+                        return e;
+                      })
                     : t.collection;
                 this.cashoutProcessing
                   ? (this.cashoutTimeout && clearTimeout(this.cashoutTimeout),

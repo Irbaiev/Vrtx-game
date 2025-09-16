@@ -469,8 +469,10 @@ function forceTicks(payload, fixed = 12) {
 
 // ==== GAME STATE (глобально, чтобы сохранялось между запросами) ====
 const RINGS = { red: 0, green: 1, blue: 2 };
-const MAX_STEP = 5; // для Symbol1 и Symbol2
-const MAX_STEP_SYMBOL3 = 8; // для Symbol3 (красное кольцо) - больше шагов
+const MAX_STEP = 4;              // ВОДА (синий): 4 шага (массив: [0,1,2,3,4] = 5 элементов)
+const MAX_STEP_SYMBOL2 = 6;      // ЗЕМЛЯ (зелёный): 6 шагов (массив: [0,1,2,3,4,5,6] = 7 элементов)
+const MAX_STEP_SYMBOL3 = 8;      // ОГОНЬ (красный): 8 шагов (массив: [0,1,2,3,4,5,6,7,8] = 9 элементов)
+const round2 = v => Math.round(v * 100) / 100;
 const SYMBOLS = ['Symbol1', 'Symbol2', 'Symbol3', 'SymbolNeutral', 'SymbolLoss'];
 
 function clamp(x, lo, hi) { return Math.min(Math.max(x, lo), hi); }
@@ -511,45 +513,77 @@ let roundCounter = 1;
 // 👉 НОВОЕ: стек истории реальных инкрементов (Symbol1/2/3)
 let historySymbols = [];  // например: ['Symbol3','Symbol2',...]
 
-function applySymbol(prev, sym) {
+function applySymbol(prev, sym, amount) {
   const col = prev.collection.slice();
-  let bonusAmount = 0; // сумма бонуса для немедленного начисления
+  let award = 0;                  // сумма к мгновенной выплате
+  const bet = Number(amount) || 0;
+  const delta = [0,0,0]; // на сколько сдвинулись кольца в этом ходе
 
   switch (sym) {
-    case 'Symbol1': // BLUE -> индекс 2
-      const newBlueValue = clamp(col[RINGS.blue] + 1, 0, MAX_STEP);
-      col[RINGS.blue] = newBlueValue;
+    case 'Symbol1': { // BLUE
+      const before = col[RINGS.blue];
+      const next   = clamp(before + 1, 0, MAX_STEP);
+      col[RINGS.blue] = next;
+      delta[RINGS.blue] = next - before;   // будет 0, если уже на MAX
       
-      // Проверяем, достигли ли мы бонусного значения (последний элемент = 7)
-      if (newBlueValue === MAX_STEP) {
-        bonusAmount = 7; // +7 бонус
-        console.log('[MSW] 🎉 БОНУС! Symbol1 достиг максимального значения, начисляем +7 к балансу');
+      // Проверяем предпоследнюю линию для анимации
+      if (before === MAX_STEP - 1 && next === MAX_STEP) {
+        console.log('[MSW] 💧 ВОДА: достигли предпоследней линии, запускаем анимацию закрытия');
+        // Устанавливаем специальный флаг для анимации
+        col[RINGS.blue] = MAX_STEP - 1; // временно откатываем на предпоследнюю
+        delta[RINGS.blue] = 1; // но показываем что должно быть движение
+      }
+      
+      if (next === MAX_STEP) {
+        award = round2(bet * 7);
+        console.log('[MSW] 💧 ВОДА MAX: +7x → +%s', award);
+      }
+      console.log('[MSW] 💧 ВОДА: before=%s, next=%s, delta=%s, award=%s', before, next, delta[RINGS.blue], award);
+      break;
+    }
+      
+    case 'Symbol2': { // GREEN
+      const before = col[RINGS.green];
+      const next   = clamp(before + 1, 0, MAX_STEP_SYMBOL2);
+      col[RINGS.green] = next;
+      delta[RINGS.green] = next - before;
+      
+      // Проверяем предпоследнюю линию для анимации
+      if (before === MAX_STEP_SYMBOL2 - 1 && next === MAX_STEP_SYMBOL2) {
+        console.log('[MSW] 🌍 ЗЕМЛЯ: достигли предпоследней линии, запускаем анимацию закрытия');
+        // Устанавливаем специальный флаг для анимации
+        col[RINGS.green] = MAX_STEP_SYMBOL2 - 1; // временно откатываем на предпоследнюю
+        delta[RINGS.green] = 1; // но показываем что должно быть движение
+      }
+      
+      if (next === MAX_STEP_SYMBOL2) {
+        award = round2(bet * 20.5);
+        console.log('[MSW] 🌍 ЗЕМЛЯ MAX: +20.5x → +%s', award);
       }
       break;
+    }
       
-    case 'Symbol2': // GREEN -> индекс 1
-      const newGreenValue = clamp(col[RINGS.green] + 1, 0, MAX_STEP);
-      col[RINGS.green] = newGreenValue;
+    case 'Symbol3': { // RED
+      const before = col[RINGS.red];
+      const next   = clamp(before + 1, 0, MAX_STEP_SYMBOL3);
+      col[RINGS.red] = next;
+      delta[RINGS.red] = next - before;
       
-      // Проверяем, достигли ли мы бонусного значения (последний элемент = 20.5)
-      if (newGreenValue === MAX_STEP) {
-        bonusAmount = 20.5; // +20.5 бонус
-        console.log('[MSW] 🎉 БОНУС! Symbol2 достиг максимального значения, начисляем +20.5 к балансу');
+      // Проверяем предпоследнюю линию для анимации
+      if (before === MAX_STEP_SYMBOL3 - 1 && next === MAX_STEP_SYMBOL3) {
+        console.log('[MSW] 🔥 ОГОНЬ: достигли предпоследней линии, запускаем анимацию закрытия');
+        // Устанавливаем специальный флаг для анимации
+        col[RINGS.red] = MAX_STEP_SYMBOL3 - 1; // временно откатываем на предпоследнюю
+        delta[RINGS.red] = 1; // но показываем что должно быть движение
+      }
+      
+      if (next === MAX_STEP_SYMBOL3) {
+        award = round2(bet * 200);
+        console.log('[MSW] 🔥 ОГОНЬ MAX: +200x → +%s', award);
       }
       break;
-      
-    case 'Symbol3': // RED -> индекс 0
-      const newRedValue = clamp(col[RINGS.red] + 1, 0, MAX_STEP_SYMBOL3);
-      col[RINGS.red] = newRedValue;
-      
-      // Symbol3 может доходить до 8 шагов (до 200x)
-      // Проверяем, достигли ли мы максимального значения
-      if (newRedValue === MAX_STEP_SYMBOL3) {
-        bonusAmount = 200; // +200 бонус за достижение максимума
-        console.log('[MSW] 🎉 БОНУС! Symbol3 достиг максимального значения, начисляем +200 к балансу');
-      }
-      break;
-    case 'SymbolNeutral':
+    }
+    case 'SymbolNeutral': {
       // Нейтраль: ничего не меняем в коллекции, но и не обнуляем игру
       // Если игра уже началась (есть прогресс), то просто пропускаем ход
       console.log('⚪ [MSW] SymbolNeutral: пропуск хода, коллекция остается:', prev.collection);
@@ -561,7 +595,8 @@ function applySymbol(prev, sym) {
           bonusWin: 0,
           superBonus: false,
           symbol: 'SymbolNeutral',
-          cashable: false
+          cashable: false,
+          delta: [0,0,0]      // нейтраль ничего не двигает
         };
       }
       // Если игра уже началась - просто пропускаем ход без изменений
@@ -571,40 +606,45 @@ function applySymbol(prev, sym) {
         bonusWin: 0,
         superBonus: false,
         symbol: 'SymbolNeutral',
-        cashable: prev.cashable
+        cashable: prev.collection.some(v => v > 0) ? prev.cashable : false,
+        delta: [0,0,0]      // нейтраль ничего не двигает
       };
-    case 'SymbolLoss': // череп -> шаг назад на 1 для всех колец
+    }
+    case 'SymbolLoss': { // череп -> шаг назад на 1 для всех колец
       // Шаг назад на 1 для всех элементов (НЕ трогаем баланс)
       const before = [...col];
-      col = col.map(v => typeof v === 'number' ? Math.max(0, v - 1) : v);
+      const after  = before.map(v => Math.max(0, v - 1));
+      const d      = after.map((v,i)=>v-before[i]);
       
-      console.log('💀 [MSW] ЧЕРЕП в applySymbol — шаг назад на 1. Было:', before, 'Стало:', col);
+      console.log('💀 [MSW] ЧЕРЕП в applySymbol — шаг назад на 1. Было:', before, 'Стало:', after);
       
       return {
-        initial: col.every(v => v === 0), // initial только если все кольца на 0
-        collection: col,
+        initial: after.every(v => v === 0), // initial только если все кольца на 0
+        collection: after,
         bonusWin: 0,
         superBonus: false,
         symbol: 'SymbolLoss', // показываем череп
-        cashable: col.some(v => v > 0) // кэшаут доступен если есть прогресс
+        cashable: after.some(v => v > 0), // кэшаут доступен если есть прогресс
+        delta: d
       };
+    }
   }
 
-  // Если есть бонус - начисляем его немедленно
-  if (bonusAmount > 0) {
-    BALANCE += bonusAmount;
-    console.log(`[MSW] 💰 Начислен бонус ${bonusAmount}, новый баланс: ${BALANCE}`);
+  // мгновенная выплата
+  if (award > 0) {
+    BALANCE = round2(BALANCE + award);
+    console.log('[MSW] 💰 Выплата бонуса:', award, '→ баланс:', BALANCE);
   }
 
-  // Для Symbol1, Symbol2, Symbol3 - обычная логика
   const hasProgress = col.some(v => v > 0);
   return {
-    initial: !hasProgress ? prev.initial : false, // если пошёл прогресс — старта уже нет
+    initial: !hasProgress ? prev.initial : false,
     collection: col,
-    bonusWin: bonusAmount, // передаем бонус в ответе
+    bonusWin: award,               // реальная сумма выплаты
     superBonus: false,
     symbol: sym,
-    cashable: hasProgress // кэшаут только если есть хоть 1 шаг
+    cashable: hasProgress,     // cashout разрешён только если есть прогресс
+    delta
   };
 }
 // ==== /GAME STATE ====
@@ -720,28 +760,54 @@ self.addEventListener('fetch', (event) => {
             payout: payout,
             coefficient: coefficient,
             autocashout: false,
-            roundId: `round-${roundCounter}`
+            roundId: `round-${roundCounter}`,
+            balance: BALANCE,
+            delta: lastState.delta
           });
         }
 
         // обычный символ — инкремент дорожки и разрешаем кэшаут
         roundCounter += 1;
-        lastState = applySymbol(lastState, sym);
+        lastState = applySymbol(lastState, sym, amount);
 
         // пишем историю только для инкрементов
         if (sym === 'Symbol1' || sym === 'Symbol2' || sym === 'Symbol3') {
           historySymbols.push(sym);
         }
 
-        lastState = { ...lastState, cashable: true };
-
+        // НЕ перезаписываем cashable - он уже правильно установлен в applySymbol
+        const payout = round2(lastState.bonusWin || 0);
+        const coefficient = amount > 0 && payout > 0 ? round2(payout / amount) : 0;
+        console.log('[MSW] 📤 Отправляем ответ:', {
+          payout,
+          balance: BALANCE,
+          delta: lastState.delta,
+          bonusWin: lastState.bonusWin
+        });
+        
         return createJsonResponse({
           state: lastState,
-          result: Math.random() < 0.5 ? 'won' : 'lose',
-          payout: +(Math.random() * 5).toFixed(2),
-          coefficient: +(1 + Math.random() * 4).toFixed(2),
+          result: payout > 0 ? 'won' : 'lose',
+          payout,
+          coefficient,
+          balance: BALANCE,                    // 👈 обновлённый баланс сразу
+          delta: lastState.delta,   // 👈 фронту будет понятно, было ли реальное движение
           autocashout: false,
-          roundId: `round-${roundCounter}`
+          roundId: `round-${roundCounter}`,
+          // Для правильной анимации передаем exCollection (предыдущее состояние)
+          // Всегда передаем exCollection для анимации, даже когда delta=0
+          exCollection: lastState.collection.map((v, i) => {
+            const delta = lastState.delta[i] || 0;
+            // Если delta=0 (кольцо уже на MAX), показываем анимацию от MAX-1 к MAX
+            if (delta === 0 && v > 0) {
+              return v - 1;
+            }
+            // Если delta=1 и мы на предпоследней линии, показываем анимацию от предпоследней к последней
+            if (delta === 1 && v > 0) {
+              return v - 1;
+            }
+            return v - delta;
+          })
         });
       })());
       return;
@@ -813,6 +879,9 @@ self.addEventListener('fetch', (event) => {
                 }
 
                 // === ПОЛНЫЙ КЭШАУТ (обычный Cashout) ===
+                // Сохраняем предыдущее состояние для анимации
+                const previousCollection = [...lastState.collection];
+                
                 // Считаем коэффициент на основе текущего состояния колец
                 const coefficient = calculateCoefficientFromRings(lastState.collection);
                 const betAmount = 1; // можно получать из запроса, но пока фиксируем
@@ -840,7 +909,10 @@ self.addEventListener('fetch', (event) => {
                   payout,
                   coefficient: coefficient,
                   roundId: `round-${roundCounter}`,
-                  partial: false
+                  partial: false,
+                  balance: BALANCE,
+                  // Для правильной анимации cashout передаем exCollection (предыдущее состояние)
+                  exCollection: previousCollection
                 });
               })());
               return;
