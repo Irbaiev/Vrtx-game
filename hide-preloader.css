@@ -81,17 +81,15 @@ body {
     padding: 0 !important;
 }
 
-/* Простое правило для прелоадера - только на мобильных */
+/* Синхронизированное отображение прелоадера только на мобильных */
 @media screen and (max-width: 768px) {
     .preloaderImg--zJ7gU {
         display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
         position: fixed !important;
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
-        z-index: 999999 !important;
+        z-index: 9999 !important;
         width: min(16.625rem, 266px) !important;
         height: min(12rem, 192px) !important;
         background-image: url('535c8f525670da7c5368.webp') !important;
@@ -99,6 +97,39 @@ body {
         background-size: contain !important;
         background-position: center !important;
         pointer-events: none !important;
+        /* Анимация исчезновения синхронизированная с JS задержками */
+        animation: preloaderFadeOut 0.3s ease-in-out 1.4s forwards;
+    }
+}
+
+/* Анимация исчезновения для портретной ориентации (1.7s - 0.3s = 1.4s) */
+@keyframes preloaderFadeOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+/* Анимация исчезновения для ландшафтной ориентации (3.5s - 0.3s = 3.2s) */
+@keyframes preloaderFadeOutLandscape {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+/* Для ландшафтной ориентации на мобильных */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .preloaderImg--zJ7gU {
+        animation: preloaderFadeOutLandscape 0.3s ease-in-out 3.2s forwards;
     }
 }
 
